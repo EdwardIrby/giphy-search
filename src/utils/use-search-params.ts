@@ -1,5 +1,8 @@
 type SearchParamSetterCallback = (params: Map<string, string>) => void;
 
+/**
+ * @description a utility function for setting and getting browser search parameters
+ */
 export const useSearchParams = (): [() => Map<string, string>, (callback: SearchParamSetterCallback) => void] =>{
   const getSearchParams = (): Map<string, string> => {
     const searchParams = new URLSearchParams(window.location.search)

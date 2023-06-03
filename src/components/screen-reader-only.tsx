@@ -9,6 +9,6 @@ const [ cls, stylesheet ] = css`
 export const ScreenReaderOnly: PlaitedElement = props => (
   <span {...props}
     {...stylesheet}
-    class={cls.screenReaderOnly}
+    className={cls.screenReaderOnly}
   />
 )

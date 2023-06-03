@@ -1,5 +1,5 @@
 import { PlaitedElement, css } from 'plaited'
-import { Data } from './types.js'
+import { Data } from '../types.js'
 const [ cls, stylesheet ] = css`
 .grid {
 
@@ -17,26 +17,26 @@ const [ cls, stylesheet ] = css`
 
 }
 `
-export const Grid: PlaitedElement<{
+export const GifGrid: PlaitedElement<{
   thumbs: Data
 }> = ({ thumbs, 'data-trigger': dataTrigger }) =>(
   <div
-    class={cls.grid}
+    className={cls.grid}
     { ...stylesheet}
   >
     {[ ...thumbs ].map(([ id, { src, title } ]) =>(
       <button
         key={`${id}`}
         value={id}
-        class={cls.thumb}
+        className={cls.thumb}
         data-trigger={dataTrigger}
       >
-        <span class={cls.screenReaderOnly}>Click to view</span>
+        <span className={cls.screenReaderOnly}>Click to view</span>
         <image
           src={src}
-          class={cls.image}
+          className={cls.image}
         />
-        <span class={cls.title}>{title}</span>
+        <span className={cls.title}>{title}</span>
       </button>
     ))}
   </div>

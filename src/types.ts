@@ -7,3 +7,4 @@ string| number,
   large: string
 }
 >
+export { GifsResult } from '@giphy/js-fetch-api'
