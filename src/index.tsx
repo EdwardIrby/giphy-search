@@ -1,5 +1,5 @@
 import { useSugar } from 'plaited'
 import { App, AppTemplate } from './app.js'
-const root = useSugar(document.querySelector('#root'))
+const root = useSugar(document.querySelector('body'))
 App()
-root.render(<AppTemplate />)
+root.render(<AppTemplate />,  'beforeend')
