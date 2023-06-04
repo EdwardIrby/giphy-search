@@ -5,7 +5,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "bun web-dev-server --config web-dev-server.config.js"
+    "start": "bunx web-dev-server --config web-dev-server.config.js"
   },
   "browserslist": [
     "> 2%"
