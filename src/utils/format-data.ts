@@ -9,14 +9,14 @@ export const formatData = (data: GifsResult['data']): Data=> {
     const {
       title,
       id,
-      images: { preview_webp, '480w_still': large },
+      images: { preview_webp, '480w_still': large, preview },
     } = gif
     toRet.set(
       id,
       {
         title,
-        src: preview_webp?.url ?? '',
-        size: preview_webp?.size ?? '',
+        src: preview_webp?.url ?? preview.url,
+        size: preview_webp?.size ?? preview.size,
         large: large.url, 
       })
   }
