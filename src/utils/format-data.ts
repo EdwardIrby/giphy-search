@@ -15,7 +15,7 @@ export const formatData = (data: GifsResult['data']): Data=> {
     toRet.set(
       id,
       {
-        title,
+        title:title.trim(),
         src: preview_webp?.url ?? preview.url,
         aspectRatio,
       })

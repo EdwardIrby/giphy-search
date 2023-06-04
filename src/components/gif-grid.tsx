@@ -28,9 +28,6 @@ const [ cls, stylesheet ] = css`
   aspect-ratio: var(--aspect-ratio);
   width: 100%;
 }
-.screenReaderOnly {
-
-}
 .title {
   border-top: 2px solid var(--color-yellow);
   font-size: 14px;
@@ -40,6 +37,9 @@ const [ cls, stylesheet ] = css`
   white-space: normal;
   overflow-wrap: break-word; 
   width: 100%;
+}
+.title:empty{
+  border-top: none;
 }
 `
 export const GifGrid: PlaitedElement<{
