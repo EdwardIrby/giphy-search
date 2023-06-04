@@ -35,9 +35,8 @@ Plenty this is a simple website and there are edge cases that are not accounted 
 
 ### local
 
-Clone repository and ensure you have bun >= 0.5.9 installed
-
-Run `bash setup.sh`
+1. Clone repository and ensure you have bun >= 0.5.9 installed
+2. Run `bash setup.sh`
 
 ### devcontainer
 
@@ -45,7 +44,14 @@ Run `bash setup.sh`
 2. Ensure docker desktop daemon/app is running
 3. Open new window for VSCode
 4. `ctrl/cmd + shift + p`
-5. search for **Dev Containers:Clone Repository in Container Volume**
+5. Search for **Dev Containers:Clone Repository in Container Volume**
 6. Enter this repo name **plaited/utils**
 7. Wait for it to download and set everything up
 8. Open a VSCode terminal tab and run `zsh setup.sh`
+
+## codespaces
+1. Login into github
+2. Click on green code button and create codespace
+3. In codespaces terminal run `zsh setup.sh`
+
+ ![Screenshot 2023-06-04 180710](https://github.com/EdwardIrby/giphy-search/assets/1058725/34cd8b5a-3528-4ffb-b5aa-e62aa9c7fdd4)
