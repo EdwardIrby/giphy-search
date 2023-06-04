@@ -31,6 +31,9 @@ Plenty this is a simple website and there are edge cases that are not accounted 
 - vscode
 - Docker
 
+### codespaces
+- none
+
 ## Dev Setup
 
 ### local
