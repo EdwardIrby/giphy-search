@@ -17,6 +17,7 @@ Plenty this is a simple website and there are edge cases that are not accounted 
 - It's not a Responsive design and is best used on a desktop monitor
 - It exposes the api key client side opening it up for abuse
 - The entire repo lacks test but time boxing this didn't really allow for that.
+- Navigation buttons do not update results when used
 - Needs more rich styling, animations, and a better empty state
 
 ## Dev Requirements
