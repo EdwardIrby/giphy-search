@@ -4,15 +4,13 @@ import {
   PlaitedElement,
   css,
   useStore,
+  classNames,
 } from 'plaited'
 import { useFetch, useSearchParams, getFetchURL, formatData } from './utils/index.js'
 import { Data, GifsResult } from './types.js'
 import {
   GiphyIcon,
   Button,
-  ButtonRow,
-  ScreenReaderOnly,
-  GifModal,
   GifGrid,
 } from './components/index.js'
 /**
@@ -27,33 +25,92 @@ const [ cls, stylesheet ] = css`
     height: 100%;
     display: flex;
     flex-direction: column;
+    row-gap: 24px;
+    align-items: center;
+    padding: 12px 12px 0;
+    box-sizing: border-box;
   }
   .header {
-
+    display: flex;
+    justify-content: space-between;
+    column-gap: 20px;
+    font-size: var(--font-size);
+   line-height: var(--line-height);
+   align-items: center;
+  }
+  .label {
+    font-size: 24px;
   }
   .main {
-
+    flex: 1;
+    overflow:hidden;
+    padding: 12px 0;
+    border: 2px solid var(--color-yellow);
+    --gf-ring-offset-shadow: 0 0 10px rgba(255, 236, 25, 0.3);
+    --gf-ring-shadow: 0 0 5px rgba(255, 236, 25, 0.5);
+    --gf-action-shadow: 0 0 15px rgba(255, 236, 25, 0.7);
+    box-shadow: inset var(--gf-ring-offset-shadow), inset var(--gf-ring-shadow);
+  }
+  .mainEmpty {
+    border: none;
+  }
+  .inner {
+    height: 100%;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .inner::-webkit-scrollbar {
+    display: none;
   }
   .inputAddOn{
-
-  }
-  .pagination {
- 
+    display: inline-flex;
+    column-gap: 6px;
   }
   .icon {
-
+    height: 54px;
   }
-  .largeIcon {
-
+  .searchForm {
+    flex:1;
+    border: 2px solid var(--color-blue);
+    padding: 12px 22px 14px 22px;
+    box-shadow: var(--gf-ring-offset-shadow,0 0 #0000),var(--gf-ring-shadow,0 0 #0000),var(--gf-action-shadow);
   }
-  .modalContainer {
-
+  .searchInput {
+    all: unset;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    background: var(--color-black);
   }
-  .modalOpen {
-
+  .selectWrapper {
+    position: relative;
+    display: inline-block;
+    box-shadow: var(--gf-ring-offset-shadow,0 0 #0000),var(--gf-ring-shadow,0 0 #0000),var(--gf-action-shadow);
   }
-  .grid {
-
+  .select {
+    all: unset;
+    position: relative;
+    color: var(--color-yellow);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    background: var(--color-black);
+    border: 2px solid var(--color-blue);
+    padding: 12px 22px 14px 8px;
+  }
+  .selectWrapper::after {
+    content: "▼";
+    /* Adjust these values to move the arrow */
+    right: 5px;
+    top: 14px;
+    position: absolute;
+    pointer-events: none;
+  }
+  .pagination {
+    display: flex;
+    column-gap: 20px;
   }
 `
 
@@ -65,8 +122,8 @@ export const App = isle(
       const [ getSearchParams, setSearchParams ] = useSearchParams()
       const limitSelector = $<HTMLSelectElement>('limit')
       const searchField = $<HTMLInputElement>('search')
-      const gridContainer = $<HTMLDivElement>('grid-container')
-      const modalContainer = $<HTMLDivElement>('modal-container')
+      const main = $<HTMLElement>('main')
+      const inner = $<HTMLDivElement>('inner')
       const previousBtn = $<HTMLButtonElement>('prev')
       const nextBtn = $<HTMLButtonElement>('next')
       const [ getData, setData ] = useStore<Data>(new Map())
@@ -92,19 +149,19 @@ export const App = isle(
           if((limit + offset) > total) {
             nextBtn.toggleAttribute('disabled', true)
           }
-          if((limit + offset) < total && nextBtn.hasAttribute('disabled')) {
+          if((limit + offset) <= total && nextBtn.hasAttribute('disabled')) {
             nextBtn.toggleAttribute('disabled', false)
           }
-          if((offset - limit) < 0) {
+          if((offset - limit) <= -1) {
             previousBtn.toggleAttribute('disabled', true)
           }
-          if((offset - limit) > 0 && previousBtn.hasAttribute('disabled')) {
+          if((offset - limit) >= 0 && previousBtn.hasAttribute('disabled')) {
             previousBtn.toggleAttribute('disabled', false)
           }
         },
         async update() {
           const params = getSearchParams()
-          const q = params.get('q') || 'kittens'
+          const q = params.get('q') || ''
           const offset = params.get('offset') ?? 0
           const limit = limitSelector.value
           const { data, pagination }: GifsResult = await useFetch(getFetchURL({ 
@@ -113,9 +170,17 @@ export const App = isle(
             offset: Number(offset),
             API_KEY,
           }))
-          if(searchField.value !== '') {
-            searchField.attr('value', q)
+
+          if(searchField.value === '') {
+            inner.replaceChildren()
+            main.classList.add(cls.mainEmpty)
+            setSearchParams(params => {
+              params.clear()
+            })
+            return
           }
+          main.classList.remove(cls.mainEmpty)
+          searchField.attr('value', q)
           setSearchParams(params => {
             params.set('q', q)
             params.set('limit', limit)
@@ -123,11 +188,14 @@ export const App = isle(
             params.set('total', `${pagination.total_count}`)
           })
           setData(formatData(data))
-          getData().size && gridContainer.render(<GifGrid thumbs={getData()} />)
+          getData().size && inner.render(<GifGrid
+            thumbs={getData()}
+            data-trigger={{ click: 'share' }}
+          />)
           trigger({ type: 'results-updated' })
         },
         share(evt: MouseEvent) {
-          const id = (evt.currentTarget as HTMLButtonElement).value
+          const id = (evt.target as HTMLButtonElement).value
           const link = `https://media.giphy.com/media/${id}/giphy.gif`
           navigator.share({
             title: 'Check out this GIF!',
@@ -135,25 +203,11 @@ export const App = isle(
             url: link,
           })
         },
-        close() {
-          modalContainer.classList.remove(cls.modalOpen)
-        },
-        open(evt: MouseEvent){
-          const id = (evt.currentTarget as HTMLButtonElement).value
-          const { title, large } = getData().get(id)
-          modalContainer.render(<GifModal
-            id={ id}
-            title={ title}
-            src={ large }
-            share={ { click: 'share' }}
-            close={{ click: 'close' }}
-          /> )
-          modalContainer.classList.add(cls.modalOpen)
-        },
         search(evt: FormDataEvent) {
           evt.preventDefault()
           const q = (evt.currentTarget as HTMLFormElement).elements['search'].value
           setSearchParams(params => {
+            params.clear()
             params.set('q', q)
           })
         },
@@ -172,7 +226,13 @@ export const App = isle(
           })
         },
       })
-      trigger({ type: 'update' })
+      const params = getSearchParams()
+      if(params.has('q')) {
+        trigger({ type: 'update' })
+      } 
+      window.addEventListener('popstate', _  =>{
+        trigger({ type: 'update' })
+      })
     }
   }
 )
@@ -181,31 +241,39 @@ export const App = isle(
 export const AppTemplate: PlaitedElement = () => (
   <App.template { ...stylesheet}>
     <header className={cls.header}>
-      <label htmlFor='search'>Search Giphy:</label>
+      <label
+        htmlFor='search'
+        className={cls.label}
+      >Search Giphy:</label>
       <div className={cls.inputAddOn}>
+        <GiphyIcon className={cls.icon} />
         <form 
-          className={cls.inputAddOn}
+          className={cls.searchForm}
           data-trigger={{ submit: 'search' }}
         >
-          <GiphyIcon className={cls.icon} />
           <input
-            type='search'
+            type='text'
             data-target='search'
             id='search'
-            value='kittens'
+            className={cls.searchInput}
           />
         </form>
+      </div>
+      <span className={cls.selectWrapper}>
         <select 
           data-target='limit'
           aria-label='Select results count to show per page'
           data-trigger={ { change: 'limit' }}
+          className={cls.select}
         >
           <option value='25'>25</option>
           <option value='50'>50</option>
           <option value='75'>75</option>
         </select>
-      </div>
-      <ButtonRow className={cls.pagination}>
+      </span>  
+      <div 
+        className={cls.pagination}
+      >
         <Button 
           data-target='prev'
           data-trigger={{ click: 'prev' }}
@@ -216,22 +284,17 @@ export const AppTemplate: PlaitedElement = () => (
           data-trigger={{ click: 'next' }}
           disabled
         >Next</Button>
-      </ButtonRow>
+      </div>
     </header>
-    <main className={cls.main}>
-      <div
-        data-target='grid-container'
-        className={cls.grid}
-      >
-        <GiphyIcon className={cls.largeIcon} />
-        <ScreenReaderOnly>No results yet</ScreenReaderOnly>
-      </div>
-      <div
-        data-target='modal-container'
-        className={cls.modal}
-      >
-
-      </div>
+    <main
+      data-target='main'
+      className={classNames(cls.main, cls.mainEmpty)}
+    >
+      <div 
+        data-target='inner'
+        aria-live='polite'
+        className={cls.inner}
+      ></div>
     </main>
   </App.template>
 )

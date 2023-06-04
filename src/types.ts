@@ -3,8 +3,7 @@ string| number,
 { 
   title: string
   src: string
-  size: string
-  large: string
+  aspectRatio: number
 }
 >
 export { GifsResult } from '@giphy/js-fetch-api'

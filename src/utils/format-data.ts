@@ -11,13 +11,13 @@ export const formatData = (data: GifsResult['data']): Data=> {
       id,
       images: { preview_webp, '480w_still': large, preview },
     } = gif
+    const aspectRatio =  preview.width / preview.height
     toRet.set(
       id,
       {
         title,
         src: preview_webp?.url ?? preview.url,
-        size: preview_webp?.size ?? preview.size,
-        large: large.url, 
+        aspectRatio,
       })
   }
   return toRet
