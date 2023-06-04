@@ -49,7 +49,7 @@ Plenty this is a simple website and there are edge cases that are not accounted 
 7. Wait for it to download and set everything up
 8. Open a VSCode terminal tab and run `zsh setup.sh`
 
-## codespaces
+### codespaces
 1. Login into github
 2. Click on green code button and create codespace
 3. In codespaces terminal run `zsh setup.sh`
