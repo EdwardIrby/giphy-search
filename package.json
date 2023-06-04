@@ -5,7 +5,8 @@
   },
   "type": "module",
   "scripts": {
-    "start": "bunx web-dev-server --config web-dev-server.config.js"
+    "start": "bunx web-dev-server --config web-dev-server.config.js",
+    "lint": "eslint . --ext .ts,.tsx,.js,.cjs"
   },
   "browserslist": [
     "> 2%"
