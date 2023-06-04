@@ -56,7 +56,7 @@ export const GifGrid: PlaitedElement<{
         value={id}
         className={cls.thumb}
       >
-        <ScreenReaderOnly>Click to view</ScreenReaderOnly>
+        <ScreenReaderOnly>Click to share</ScreenReaderOnly>
         <image
           src={src}
           className={cls.image}
