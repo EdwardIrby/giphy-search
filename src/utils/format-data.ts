@@ -15,8 +15,8 @@ export const formatData = (data: GifsResult['data']): Data=> {
       id,
       {
         title,
-        src: preview_webp.url,
-        size: preview_webp.size,
+        src: preview_webp?.url ?? '',
+        size: preview_webp?.size ?? '',
         large: large.url, 
       })
   }

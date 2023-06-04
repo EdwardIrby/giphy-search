@@ -8,8 +8,7 @@ export default {
     tsx: true,
     tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
   }) ],
-  appIndex: 'src/index.html',
+  appIndex: 'index.html',
   watch: true,
   open: true,
-  rootDir: '../../',
 }

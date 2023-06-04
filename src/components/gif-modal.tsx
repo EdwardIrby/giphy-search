@@ -1,7 +1,7 @@
 import { PlaitedElement, css } from 'plaited'
 import { Button, ButtonRow, GiphyIcon, ScreenReaderOnly } from './index.js'
 const [ cls, stylesheet ] = css`
-.focused {
+.gifModal {
 
 }
 .image {
@@ -32,7 +32,7 @@ export const GifModal: PlaitedElement<{
   title,
 }) => (
   <div {...stylesheet}
-    className={cls.focused}
+    className={cls.gifModal}
   >
     <img src={src}
       className={cls.image}
