@@ -14,11 +14,12 @@ A simple web site to search for gifs using Giphy. Time boxing to 4-5 hours of wo
 Plenty this is a simple website and there are edge cases that are not accounted for. 
  
 - The Giphy sdk couldn't be used because of use of `type="module"` in package.json field
-- It's not a Responsive design and is best used on a desktop monitor
+- It's not a responsive design and is best used on a desktop monitor
 - It exposes the api key client side opening it up for abuse
-- The entire repo lacks test but time boxing this didn't really allow for that.
+- The entire repo lacks tests but time boxing this didn't really allow for that
 - Navigation buttons do not update results when used
 - Needs more rich styling, animations, and a better empty state
+- Accessibility needs to be audited and fixed
 
 ## Dev Requirements
 
